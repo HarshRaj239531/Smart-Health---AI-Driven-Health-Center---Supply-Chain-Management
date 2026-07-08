@@ -3,8 +3,8 @@ import axios from 'axios';
 
 const AuthContext = createContext();
 
-// Dynamically target backend relative to the browser host (very robust for Docker/Local network testing)
-const API_BASE = `http://${window.location.hostname}:5000/api`;
+// Dynamically target backend from build-time environment variable, otherwise fallback to local hostname
+const API_BASE = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:5000/api`;
 axios.defaults.baseURL = API_BASE;
 
 export const AuthProvider = ({ children }) => {
