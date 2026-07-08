@@ -1,0 +1,169 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  ADMIN
+  STAFF
+  DOCTOR
+}
+
+enum CenterType {
+  PHC
+  CHC
+}
+
+enum TransactionType {
+  IN
+  OUT
+  TRANSFER_IN
+  TRANSFER_OUT
+}
+
+enum BedType {
+  GENERAL
+  ICU
+  OXYGEN
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LEAVE
+  ON_CALL
+}
+
+enum SuggestionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model HealthCenter {
+  id           String                     @id @default(uuid())
+  name         String
+  type         CenterType
+  address      String
+  district     String
+  latitude     Float
+  longitude    Float
+  contact      String
+  createdAt    DateTime                   @default(now())
+  updatedAt    DateTime                   @updatedAt
+  users        User[]
+  inventories  Inventory[]
+  transactions StockTransaction[]         @relation("CenterTransactions")
+  footfalls    PatientFootfall[]
+  beds         BedAvailability[]
+  attendance   StaffAttendance[]
+  testAudits   TestAudit[]
+  sources      RedistributionSuggestion[] @relation("SourceCenter")
+  targets      RedistributionSuggestion[] @relation("TargetCenter")
+}
+
+model User {
+  id             String            @id @default(uuid())
+  email          String            @unique
+  password       String
+  name           String
+  role           Role
+  healthCenterId String?
+  healthCenter   HealthCenter?     @relation(fields: [healthCenterId], references: [id], onDelete: Cascade)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  attendance     StaffAttendance[]
+}
+
+model Inventory {
+  id             String             @id @default(uuid())
+  healthCenterId String
+  healthCenter   HealthCenter       @relation(fields: [healthCenterId], references: [id], onDelete: Cascade)
+  itemType       String             // "MEDICINE", "REAGENT", "EQUIPMENT"
+  name           String
+  currentStock   Int
+  minStock       Int
+  unit           String             // "vials", "tablets", "kits", "bottles", "units"
+  batchNumber    String
+  expiryDate     DateTime
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  transactions   StockTransaction[]
+}
+
+model StockTransaction {
+  id                String          @id @default(uuid())
+  healthCenterId    String
+  healthCenter      HealthCenter    @relation("CenterTransactions", fields: [healthCenterId], references: [id], onDelete: Cascade)
+  inventoryId       String
+  inventory         Inventory       @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+  type              TransactionType
+  quantity          Int
+  referenceCenterId String?         // For transfers
+  date              DateTime        @default(now())
+  notes             String?
+}
+
+model PatientFootfall {
+  id             String       @id @default(uuid())
+  healthCenterId String
+  healthCenter   HealthCenter @relation(fields: [healthCenterId], references: [id], onDelete: Cascade)
+  count          Int
+  date           DateTime
+  peakHour       Int          // Hour (0-23)
+  department     String       // "OPD", "EMERGENCY", "IPD"
+  createdAt      DateTime     @default(now())
+}
+
+model BedAvailability {
+  id             String       @id @default(uuid())
+  healthCenterId String
+  healthCenter   HealthCenter @relation(fields: [healthCenterId], references: [id], onDelete: Cascade)
+  type           BedType
+  totalBeds      Int
+  occupiedBeds   Int
+  updatedAt      DateTime     @updatedAt
+}
+
+model StaffAttendance {
+  id             String           @id @default(uuid())
+  userId         String
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  healthCenterId String
+  healthCenter   HealthCenter     @relation(fields: [healthCenterId], references: [id], onDelete: Cascade)
+  date           DateTime
+  checkIn        DateTime?
+  checkOut       DateTime?
+  status         AttendanceStatus
+  notes          String?
+}
+
+model TestAudit {
+  id             String       @id @default(uuid())
+  healthCenterId String
+  healthCenter   HealthCenter @relation(fields: [healthCenterId], references: [id], onDelete: Cascade)
+  testName       String       // e.g. "Malaria Antigen", "Dengue NS1", "Complete Blood Count", "Pregnancy Test"
+  isAvailable    Boolean      @default(true)
+  reagentStock   Int          // Stock of test kits/reagents
+  dailyCapacity  Int          // Max tests per day
+  updatedAt      DateTime     @updatedAt
+}
+
+model RedistributionSuggestion {
+  id             String           @id @default(uuid())
+  sourceCenterId String
+  sourceCenter   HealthCenter     @relation("SourceCenter", fields: [sourceCenterId], references: [id], onDelete: Cascade)
+  targetCenterId String
+  targetCenter   HealthCenter     @relation("TargetCenter", fields: [targetCenterId], references: [id], onDelete: Cascade)
+  inventoryId    String           // item being transferred
+  itemName       String
+  quantity       Int
+  urgency        String           // "LOW", "MEDIUM", "HIGH"
+  status         SuggestionStatus @default(PENDING)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+}

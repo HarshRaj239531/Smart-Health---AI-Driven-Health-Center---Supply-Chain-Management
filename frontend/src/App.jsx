@@ -1,0 +1,135 @@
+import React, { useState, useEffect } from 'react';
+import { useAuth } from './context/AuthContext';
+import LandingPage from './pages/LandingPage';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
+import Sidebar from './components/Sidebar';
+import Header from './components/Header';
+import OverviewDashboard from './pages/OverviewDashboard';
+import StockManagement from './pages/StockManagement';
+import DemandForecast from './pages/DemandForecast';
+import RedistributionSuggestions from './pages/RedistributionSuggestions';
+import BedsAndPatients from './pages/BedsAndPatients';
+import StaffAttendance from './pages/StaffAttendance';
+import LabAndTests from './pages/LabAndTests';
+
+const App = () => {
+  const { user, token, loading } = useAuth();
+  
+  // State-based routing
+  const [currentPage, setCurrentPage] = useState('landing');
+  const [activeTab, setActiveTab] = useState('overview');
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  
+  // Perspective control (for district administrators)
+  const [selectedCenterId, setSelectedCenterId] = useState('DISTRICT');
+
+  // Handle route protection and redirect loops
+  useEffect(() => {
+    if (!loading) {
+      if (token) {
+        // If logged in, go to dashboard
+        if (currentPage === 'landing' || currentPage === 'login' || currentPage === 'signup') {
+          setCurrentPage('dashboard');
+        }
+      } else {
+        // If not logged in, prevent dashboard viewing
+        if (currentPage === 'dashboard') {
+          setCurrentPage('landing');
+        }
+      }
+    }
+  }, [token, loading, currentPage]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#0b0f19] flex items-center justify-center">
+        <span className="w-12 h-12 rounded-full border-4 border-emerald-500 border-t-transparent animate-spin" />
+      </div>
+    );
+  }
+
+  // Render Auth and Landing Screens
+  if (currentPage === 'landing') {
+    return <LandingPage onNavigate={setCurrentPage} />;
+  }
+
+  if (currentPage === 'login') {
+    return <LoginPage onNavigate={setCurrentPage} />;
+  }
+
+  if (currentPage === 'signup') {
+    return <SignupPage onNavigate={setCurrentPage} />;
+  }
+
+  // Render Shell Dashboard Frame
+  if (currentPage === 'dashboard') {
+    return (
+      <div className="min-h-screen bg-[#060913] flex font-sans">
+        
+        {/* Navigation Sidebar */}
+        <Sidebar 
+          activeTab={activeTab} 
+          setActiveTab={setActiveTab} 
+          isCollapsed={isSidebarCollapsed} 
+          setIsCollapsed={setIsSidebarCollapsed} 
+        />
+
+        {/* Core Main Area */}
+        <div className={`flex-1 flex flex-col min-h-screen transition-all duration-300 ${isSidebarCollapsed ? 'pl-20' : 'pl-64'}`}>
+          
+          {/* Main Top Header */}
+          <Header 
+            selectedCenterId={selectedCenterId} 
+            setSelectedCenterId={setSelectedCenterId} 
+          />
+
+          {/* Dynamic Tab Inner Content */}
+          <main className="p-6 md:p-8 flex-grow">
+            {activeTab === 'overview' && (
+              <OverviewDashboard 
+                selectedCenterId={selectedCenterId} 
+                setSelectedCenterId={setSelectedCenterId} 
+              />
+            )}
+            {activeTab === 'inventory' && (
+              <StockManagement 
+                selectedCenterId={selectedCenterId} 
+              />
+            )}
+            {activeTab === 'forecast' && (
+              <DemandForecast 
+                selectedCenterId={selectedCenterId} 
+              />
+            )}
+            {activeTab === 'redistribution' && (
+              <RedistributionSuggestions 
+                selectedCenterId={selectedCenterId} 
+              />
+            )}
+            {activeTab === 'beds' && (
+              <BedsAndPatients 
+                selectedCenterId={selectedCenterId} 
+              />
+            )}
+            {activeTab === 'staff' && (
+              <StaffAttendance 
+                selectedCenterId={selectedCenterId} 
+              />
+            )}
+            {activeTab === 'lab' && (
+              <LabAndTests 
+                selectedCenterId={selectedCenterId} 
+              />
+            )}
+          </main>
+        </div>
+
+      </div>
+    );
+  }
+
+  return null;
+};
+
+export default App;
