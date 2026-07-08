@@ -23,7 +23,7 @@ const App = () => {
   // State-based routing
   const [currentPage, setCurrentPage] = useState('landing');
   const [activeTab, setActiveTab] = useState('overview');
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => window.innerWidth < 768);
   
   // Perspective control (for district administrators)
   const [selectedCenterId, setSelectedCenterId] = useState('DISTRICT');
@@ -79,17 +79,27 @@ const App = () => {
           setIsCollapsed={setIsSidebarCollapsed} 
         />
 
-        {/* Core Main Area */}
-        <div className={`flex-1 flex flex-col min-h-screen transition-all duration-300 ${isSidebarCollapsed ? 'pl-20' : 'pl-64'}`}>
+        {/* Mobile Sidebar Overlay Backdrop */}
+        {!isSidebarCollapsed && (
+          <div 
+            onClick={() => setIsSidebarCollapsed(true)} 
+            className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-40 md:hidden"
+          />
+        )}
+
+        {/* Core Main Area - Responsive Padding */}
+        <div className={`flex-1 flex flex-col min-h-screen transition-all duration-300 pl-0 ${isSidebarCollapsed ? 'md:pl-20' : 'md:pl-64'}`}>
           
           {/* Main Top Header */}
           <Header 
             selectedCenterId={selectedCenterId} 
             setSelectedCenterId={setSelectedCenterId} 
+            isSidebarCollapsed={isSidebarCollapsed}
+            setIsSidebarCollapsed={setIsSidebarCollapsed}
           />
 
           {/* Dynamic Tab Inner Content */}
-          <main className="p-6 md:p-8 flex-grow">
+          <main className="p-4 sm:p-6 md:p-8 flex-grow">
             {activeTab === 'overview' && (
               <OverviewDashboard 
                 selectedCenterId={selectedCenterId} 

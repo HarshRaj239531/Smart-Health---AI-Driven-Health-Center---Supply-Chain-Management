@@ -141,37 +141,37 @@ const LandingPage = ({ onNavigate }) => {
           </div>
 
           {/* Action buttons */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             {/* Theme switcher */}
             <button
               onClick={toggleTheme}
-              className="flex items-center justify-center p-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-emerald-500/50 hover:text-emerald-400 text-slate-400 transition shadow-md"
+              className="flex items-center justify-center p-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-emerald-500/50 hover:text-emerald-400 text-slate-400 transition shadow-md"
               title="Toggle Light/Dark Theme"
             >
-              {theme === 'light' ? <Moon size={18} className="text-indigo-400" /> : <Sun size={18} className="text-amber-400" />}
+              {theme === 'light' ? <Moon size={15} className="text-indigo-400" /> : <Sun size={15} className="text-amber-400" />}
             </button>
 
             {/* Language switcher */}
             <button
               onClick={toggleLanguage}
-              className="flex items-center space-x-2 px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-sm hover:border-emerald-500/50 hover:text-emerald-400 text-slate-300 transition shadow-md"
+              className="flex items-center space-x-1.5 px-2.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs sm:text-sm hover:border-emerald-500/50 hover:text-emerald-400 text-slate-300 transition shadow-md"
             >
-              <Globe size={15} className="text-emerald-400" />
-              <span className="font-semibold">{t('langSwitch')}</span>
+              <Globe size={14} className="text-emerald-400" />
+              <span className="hidden sm:inline font-semibold">{t('langSwitch')}</span>
             </button>
 
             {/* Portal action */}
             {token ? (
               <button
                 onClick={() => onNavigate('dashboard')}
-                className="px-5 py-2 rounded-xl bg-emerald-500 text-slate-950 text-sm font-bold hover:bg-emerald-400 transition shadow-[0_4px_15px_rgba(16,185,129,0.35)] flex items-center"
+                className="px-3 py-2 sm:px-5 rounded-xl bg-emerald-500 text-slate-950 text-xs sm:text-sm font-bold hover:bg-emerald-400 transition shadow-[0_4px_15px_rgba(16,185,129,0.35)] flex items-center"
               >
-                {t('landingGetStarted')} <ArrowRight size={15} className="ml-1.5" />
+                {t('landingGetStarted')} <ArrowRight size={14} className="ml-1.5" />
               </button>
             ) : (
               <button
                 onClick={() => onNavigate('login')}
-                className="px-5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-200 text-sm font-semibold hover:border-emerald-500/40 hover:text-emerald-400 transition shadow-md"
+                className="px-3 py-2 sm:px-5 rounded-xl bg-slate-900 border border-slate-800 text-slate-200 text-xs sm:text-sm font-semibold hover:border-emerald-500/40 hover:text-emerald-400 transition shadow-md"
               >
                 {t('landingAdminLogin')}
               </button>

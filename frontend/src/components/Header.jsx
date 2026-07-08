@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
-import { Bell, Globe, Building2, AlertTriangle, RefreshCw, Sun, Moon } from 'lucide-react';
+import { Bell, Globe, Building2, AlertTriangle, RefreshCw, Sun, Moon, Menu } from 'lucide-react';
 import axios from 'axios';
 
-const Header = ({ selectedCenterId, setSelectedCenterId }) => {
+const Header = ({ selectedCenterId, setSelectedCenterId, isSidebarCollapsed, setIsSidebarCollapsed }) => {
   const { t, language, toggleLanguage } = useLanguage();
   const { user } = useAuth();
   const { theme, toggleTheme } = useTheme();
@@ -67,19 +67,31 @@ const Header = ({ selectedCenterId, setSelectedCenterId }) => {
   }, [user]);
 
   return (
-    <header className="glass-panel border-b border-slate-800/50 h-20 px-6 flex items-center justify-between sticky top-0 z-20">
+    <header className="glass-panel border-b border-slate-800/50 h-20 px-3 sm:px-6 flex items-center justify-between sticky top-0 z-20">
       
       {/* Title & Perspective Selector */}
-      <div className="flex items-center space-x-6">
+      <div className="flex items-center space-x-2 sm:space-x-4">
+        {/* Mobile Hamburger Toggle Menu Button */}
+        <button 
+          onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)} 
+          className={`p-2 rounded-xl border transition md:hidden ${
+            theme === 'light' 
+              ? 'border-slate-200 bg-white hover:bg-slate-50 text-slate-600' 
+              : 'border-slate-800 bg-[#0b0f19] hover:bg-slate-900 text-slate-300'
+          }`}
+          title="Toggle Navigation Menu"
+        >
+          <Menu size={16} />
+        </button>
         <div>
           {user?.role === 'ADMIN' ? (
-            <div className="flex items-center space-x-3">
-              <Building2 className="text-emerald-400" size={24} />
+            <div className="flex items-center space-x-2">
+              <Building2 className="text-emerald-400 hidden sm:block" size={20} />
               <div className="relative">
                 <select
                   value={selectedCenterId}
                   onChange={(e) => setSelectedCenterId(e.target.value)}
-                  className="bg-slate-900 border border-slate-800 text-slate-100 py-1.5 px-4 rounded-xl text-sm font-medium focus:outline-none focus:border-emerald-500 transition cursor-pointer"
+                  className="bg-slate-900 border border-slate-800 text-slate-100 py-1.5 px-3 rounded-xl text-xs sm:text-sm font-medium focus:outline-none focus:border-emerald-500 transition cursor-pointer max-w-[130px] sm:max-w-none"
                 >
                   <option value="DISTRICT">{t('overviewTitle')}</option>
                   {centers.map(center => (
@@ -91,9 +103,9 @@ const Header = ({ selectedCenterId, setSelectedCenterId }) => {
               </div>
             </div>
           ) : (
-            <div className="flex items-center space-x-3">
-              <Building2 className="text-emerald-400" size={20} />
-              <span className="font-semibold text-slate-200">
+            <div className="flex items-center space-x-2">
+              <Building2 className="text-emerald-400 hidden sm:block" size={18} />
+              <span className="font-semibold text-xs sm:text-sm text-slate-200 max-w-[130px] sm:max-w-none truncate block">
                 {user?.healthCenter?.name} ({user?.healthCenter?.type})
               </span>
             </div>
@@ -102,24 +114,24 @@ const Header = ({ selectedCenterId, setSelectedCenterId }) => {
       </div>
 
       {/* Action Tray */}
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-2 sm:space-x-4">
         
         {/* Language Toggler */}
         <button
           onClick={toggleLanguage}
-          className="flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-sm hover:border-emerald-500/50 hover:text-emerald-400 transition"
+          className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs sm:text-sm hover:border-emerald-500/50 hover:text-emerald-400 transition"
         >
-          <Globe size={16} className="text-emerald-400" />
-          <span className="font-medium">{t('langSwitch')}</span>
+          <Globe size={14} className="text-emerald-400" />
+          <span className="hidden sm:inline font-medium">{t('langSwitch')}</span>
         </button>
 
         {/* Theme Toggler */}
         <button
           onClick={toggleTheme}
-          className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-emerald-500/50 hover:text-emerald-400 text-slate-400 transition"
+          className="p-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-emerald-500/50 hover:text-emerald-400 text-slate-400 transition"
           title="Toggle Light/Dark Theme"
         >
-          {theme === 'light' ? <Moon size={18} className="text-indigo-400" /> : <Sun size={18} className="text-amber-400" />}
+          {theme === 'light' ? <Moon size={15} className="text-indigo-400" /> : <Sun size={15} className="text-amber-400" />}
         </button>
 
         {/* Notifications Popover */}

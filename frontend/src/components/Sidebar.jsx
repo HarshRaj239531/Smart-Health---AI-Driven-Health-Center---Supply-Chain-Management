@@ -37,11 +37,16 @@ const Sidebar = ({ activeTab, setActiveTab, isCollapsed, setIsCollapsed }) => {
   const filteredItems = menuItems.filter(item => item.roles.includes(user?.role));
 
   return (
-    <motion.div 
-      className={`glass-panel border-r ${theme === 'light' ? 'border-slate-200' : 'border-slate-800'} flex flex-col justify-between h-screen fixed left-0 top-0 z-30 transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-64'}`}
-      initial={{ x: -100, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
+    <div 
+      className={`transform border-r ${
+        theme === 'light' 
+          ? 'bg-white border-slate-200 text-slate-800 shadow-xl' 
+          : 'bg-[#0b0f19] border-slate-800 text-slate-200 shadow-2xl'
+      } flex flex-col justify-between h-screen fixed left-0 top-0 z-50 transition-all duration-300 overflow-x-hidden ${
+        isCollapsed 
+          ? '-translate-x-full w-64 md:w-20 md:translate-x-0' 
+          : 'translate-x-0 w-64'
+      }`}
     >
       <div>
         {/* Brand Logo Header */}
@@ -131,7 +136,7 @@ const Sidebar = ({ activeTab, setActiveTab, isCollapsed, setIsCollapsed }) => {
           )}
         </button>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
