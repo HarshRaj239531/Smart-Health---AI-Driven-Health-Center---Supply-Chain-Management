@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: smart-health-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smart-health-backend
+  template:
+    metadata:
+      labels:
+        app: smart-health-backend
+    spec:
+      initContainers:
+        # Phase 1: Wait for database port to open
+        - name: wait-for-postgres
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - "until nc -z -v -w3 postgres-service 5432; do echo 'Waiting for PostgreSQL...'; sleep 2; done;"
+        
+        # Phase 2: Run database migrations before app start
+        - name: db-migrations
+          image: smarthealth-ai-drivenhealthcentersupplychainmanagement-backend:latest
+          imagePullPolicy: IfNotPresent
+          command:
+            - sh
+            - -c
+            - "npx prisma migrate deploy"
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: smart-health-secrets
+                  key: DATABASE_URL
+      
+      containers:
+        - name: backend
+          image: smarthealth-ai-drivenhealthcentersupplychainmanagement-backend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+              name: api
+          env:
+            - name: PORT
+              value: "5000"
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: smart-health-secrets
+                  key: DATABASE_URL
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: smart-health-secrets
+                  key: JWT_SECRET
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  labels:
+    app: smart-health-backend
+spec:
+  ports:
+    - port: 5000
+      targetPort: 5000
+  selector:
+    app: smart-health-backend
+  type: ClusterIP

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  labels:
+    app: smart-health-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smart-health-frontend
+  template:
+    metadata:
+      labels:
+        app: smart-health-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: smarthealth-ai-drivenhealthcentersupplychainmanagement-frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+              name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  labels:
+    app: smart-health-frontend
+spec:
+  ports:
+    - port: 3000
+      targetPort: 3000
+      nodePort: 30000  # Expose port externally at http://<node-ip>:30000
+  selector:
+    app: smart-health-frontend
+  type: NodePort

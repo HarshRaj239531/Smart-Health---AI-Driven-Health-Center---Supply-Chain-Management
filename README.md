@@ -151,3 +151,41 @@ To browse rows, verify relationships, or audit transactions using a graphical we
    - **Password**: `postgres_secure_pass_123`
    - **Database**: `smart_health`
 3. Click **Login** to inspect the table records.
+
+---
+
+## Kubernetes Deployment Guide
+
+You can deploy the platform to a Kubernetes cluster (e.g. Minikube, Kind, or a cloud provider) using the manifests in the [kubernetes/](file:///d:/Smart%20Health%20-%20AI-Driven%20Health%2520Center%20&%20Supply%20Chain%20Management/kubernetes) folder.
+
+### Step 1: Push or Load Images
+Kubernetes pulls images from a registry. First, build and tag your backend/frontend images locally, and either load them into your local cluster (e.g. `minikube image load <image_name>`) or push them to a registry (like Docker Hub) and update the `image` field in `backend-deployment.yaml` and `frontend-deployment.yaml`.
+
+### Step 2: Apply the Configurations
+Apply all Kubernetes manifests from the root directory:
+```bash
+kubectl apply -f kubernetes/
+```
+
+This will deploy:
+1. **Secrets (`postgres-secrets.yaml`)**: Base64 encoded database login credentials and JWT keys.
+2. **PersistentVolumeClaim (`postgres-pvc.yaml`)**: Provisions a persistent volume claim (5GB) to ensure PostgreSQL data survives pod restarts.
+3. **Database Server (`postgres-deployment.yaml`)**: Starts Postgres and maps it to `postgres-service` on port 5432 internally.
+4. **Backend REST API (`backend-deployment.yaml`)**: Launches the Express API server. Includes `wait-for-postgres` and `db-migrations` initContainers to wait for the database and automatically execute Prisma schema migrations before starting the server.
+5. **Frontend Client (`frontend-deployment.yaml`)**: Launches the Vite React web client, exposed externally on NodePort `30000`.
+6. **Adminer Console (`adminer-deployment.yaml`)**: Launches Adminer, exposed externally on NodePort `30080`.
+
+### Step 3: Access the Applications
+To access the applications in your browser:
+- **Frontend Client**: `http://<node-ip>:30000` (e.g. `http://localhost:30000` or minikube IP)
+- **Adminer DB Console**: `http://<node-ip>:30080`
+
+If using Minikube, you can fetch the service URL directly:
+```bash
+minikube service frontend-service
+minikube service adminer-service
+```
+Or use port forwarding:
+```bash
+kubectl port-forward service/frontend-service 3000:3000
+```
