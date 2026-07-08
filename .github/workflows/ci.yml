@@ -1,0 +1,76 @@
+name: Continuous Integration (CI)
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  lint-and-validate:
+    name: Build & Validate Compilation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+
+      # Validate Backend Database Schema and Code Quality
+      - name: Install Backend Dependencies
+        run: |
+          cd backend
+          npm ci
+
+      - name: Validate Prisma Database Schema
+        run: |
+          cd backend
+          npx prisma validate
+
+      - name: Check Prisma Schema Formatting
+        run: |
+          cd backend
+          npx prisma format --check
+
+      # Validate Frontend Code Quality and Production Build Compilation
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm ci --legacy-peer-deps
+
+      - name: Verify Frontend Production Build Compiles
+        run: |
+          cd frontend
+          npm run build
+        env:
+          VITE_API_URL: "https://smart-health-ai-driven-health-center.onrender.com/api"
+
+  security-audit:
+    name: Security Vulnerability Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Audit Backend Dependencies
+        run: |
+          cd backend
+          npm audit --audit-level=moderate || true
+
+      - name: Audit Frontend Dependencies
+        run: |
+          cd frontend
+          npm audit --audit-level=moderate || true
