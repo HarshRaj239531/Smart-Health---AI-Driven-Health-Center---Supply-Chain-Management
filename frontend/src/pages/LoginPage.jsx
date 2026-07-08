@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { Mail, Lock, LogIn, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const LoginPage = ({ onNavigate }) => {
   const { t } = useLanguage();
   const { login } = useAuth();
+  const { theme } = useTheme();
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,7 +34,7 @@ const LoginPage = ({ onNavigate }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#060913] relative overflow-hidden flex flex-col justify-center items-center px-6">
+    <div className={`min-h-screen relative overflow-hidden flex flex-col justify-center items-center px-6 ${theme === 'light' ? 'bg-[#f1f5f9]' : 'bg-[#060913]'}`}>
       
       {/* Background decoration */}
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-emerald-500/5 blur-[100px] pointer-events-none" />

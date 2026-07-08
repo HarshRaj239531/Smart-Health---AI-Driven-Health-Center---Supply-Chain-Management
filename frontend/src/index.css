@@ -1,8 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   margin: 0;
@@ -83,3 +87,118 @@ body {
 .glow-rose {
   box-shadow: 0 0 20px rgba(244, 63, 94, 0.15);
 }
+
+/* ==========================================================================
+   Light Mode Overrides
+   ========================================================================== */
+.light {
+  background-color: #f1f5f9;
+}
+
+.light body {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+.light .glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.04), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+}
+
+.light .glass-input {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.light .glass-input:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.15);
+}
+
+.light .text-slate-100 { color: #0f172a !important; }
+.light .text-slate-200 { color: #1e293b !important; }
+.light .text-slate-300 { color: #334155 !important; }
+.light .text-slate-350 { color: #475569 !important; }
+.light .text-slate-400 { color: #475569 !important; }
+.light .text-slate-450 { color: #64748b !important; }
+.light .text-slate-500 { color: #64748b !important; }
+
+.light select, .light option {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+.light ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+.light ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+}
+.light ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.light tr.hover\:bg-slate-900\/10:hover {
+  background-color: rgba(15, 23, 42, 0.03) !important;
+}
+
+.light .bg-slate-900\/40 {
+  background-color: rgba(15, 23, 42, 0.03) !important;
+}
+
+.light .bg-slate-900\/20 {
+  background-color: rgba(15, 23, 42, 0.02) !important;
+}
+
+.light .bg-slate-900 {
+  background-color: #e2e8f0 !important;
+}
+
+.light .bg-slate-905\/30 {
+  background-color: rgba(15, 23, 42, 0.02) !important;
+}
+
+.light .border-slate-800 {
+  border-color: rgba(15, 23, 42, 0.08) !important;
+}
+
+.light .border-slate-850 {
+  border-color: rgba(15, 23, 42, 0.06) !important;
+}
+
+.light .border-slate-850\/60 {
+  border-color: rgba(15, 23, 42, 0.08) !important;
+}
+
+.light .border-slate-805\/40 {
+  border-color: rgba(15, 23, 42, 0.08) !important;
+}
+
+.light .border-slate-800\/80 {
+  border-color: rgba(15, 23, 42, 0.08) !important;
+}
+
+.light .bg-[#060913] {
+  background-color: #f1f5f9 !important;
+}
+
+.light .bg-[#0b0f19] {
+  background-color: #f1f5f9 !important;
+}
+
+.light .bg-slate-950/80 {
+  background-color: rgba(15, 23, 42, 0.45) !important;
+}
+
+/* Charts formatting inside light mode */
+.light .recharts-text {
+  fill: #475569 !important;
+}
+.light .recharts-cartesian-grid-horizontal line,
+.light .recharts-cartesian-grid-vertical line {
+  stroke: #e2e8f0 !important;
+}
+

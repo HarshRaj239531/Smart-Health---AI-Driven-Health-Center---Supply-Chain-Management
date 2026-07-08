@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
-import { Bell, Globe, Building2, AlertTriangle, RefreshCw } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import { Bell, Globe, Building2, AlertTriangle, RefreshCw, Sun, Moon } from 'lucide-react';
 import axios from 'axios';
 
 const Header = ({ selectedCenterId, setSelectedCenterId }) => {
   const { t, language, toggleLanguage } = useLanguage();
   const { user } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [centers, setCenters] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -109,6 +111,15 @@ const Header = ({ selectedCenterId, setSelectedCenterId }) => {
         >
           <Globe size={16} className="text-emerald-400" />
           <span className="font-medium">{t('langSwitch')}</span>
+        </button>
+
+        {/* Theme Toggler */}
+        <button
+          onClick={toggleTheme}
+          className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-emerald-500/50 hover:text-emerald-400 text-slate-400 transition"
+          title="Toggle Light/Dark Theme"
+        >
+          {theme === 'light' ? <Moon size={18} className="text-indigo-400" /> : <Sun size={18} className="text-amber-400" />}
         </button>
 
         {/* Notifications Popover */}

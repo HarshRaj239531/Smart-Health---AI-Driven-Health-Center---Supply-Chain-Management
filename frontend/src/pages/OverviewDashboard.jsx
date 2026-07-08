@@ -14,11 +14,13 @@ import {
 } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from 'recharts';
 import { motion } from 'framer-motion';
+import { useTheme } from '../context/ThemeContext';
 import axios from 'axios';
 
 const OverviewDashboard = ({ selectedCenterId, setSelectedCenterId }) => {
   const { t } = useLanguage();
   const { user } = useAuth();
+  const { theme } = useTheme();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -284,9 +286,9 @@ const OverviewDashboard = ({ selectedCenterId, setSelectedCenterId }) => {
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" vertical={false} />
-                <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} tickLine={false} />
-                <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} />
-                <Tooltip contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '12px', fontSize: '12px' }} />
+                <XAxis dataKey="date" stroke={theme === 'light' ? '#475569' : '#94a3b8'} fontSize={11} tickLine={false} />
+                <YAxis stroke={theme === 'light' ? '#475569' : '#94a3b8'} fontSize={11} tickLine={false} />
+                <Tooltip contentStyle={{ backgroundColor: theme === 'light' ? '#ffffff' : '#0f172a', borderColor: theme === 'light' ? '#cbd5e1' : '#334155', color: theme === 'light' ? '#0f172a' : '#f8fafc', borderRadius: '12px', fontSize: '12px' }} />
                 <Legend iconSize={8} iconType="circle" wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
                 <Area type="monotone" name={t('triageOPD')} dataKey="OPD" stroke="#10b981" strokeWidth={2} fillOpacity={1} fill="url(#colorOPD)" />
                 <Area type="monotone" name={t('triageEmergency')} dataKey="Emergency" stroke="#f43f5e" strokeWidth={2} fillOpacity={1} fill="url(#colorEmergency)" />

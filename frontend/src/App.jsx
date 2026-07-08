@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from './context/AuthContext';
+import { useTheme } from './context/ThemeContext';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
@@ -15,6 +16,7 @@ import LabAndTests from './pages/LabAndTests';
 
 const App = () => {
   const { user, token, loading } = useAuth();
+  const { theme } = useTheme();
   
   // State-based routing
   const [currentPage, setCurrentPage] = useState('landing');
@@ -43,7 +45,7 @@ const App = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0b0f19] flex items-center justify-center">
+      <div className={`min-h-screen flex items-center justify-center ${theme === 'light' ? 'bg-[#f1f5f9]' : 'bg-[#0b0f19]'}`}>
         <span className="w-12 h-12 rounded-full border-4 border-emerald-500 border-t-transparent animate-spin" />
       </div>
     );
@@ -65,7 +67,7 @@ const App = () => {
   // Render Shell Dashboard Frame
   if (currentPage === 'dashboard') {
     return (
-      <div className="min-h-screen bg-[#060913] flex font-sans">
+      <div className={`min-h-screen flex font-sans ${theme === 'light' ? 'bg-[#f1f5f9]' : 'bg-[#060913]'}`}>
         
         {/* Navigation Sidebar */}
         <Sidebar 

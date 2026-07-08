@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { Mail, Lock, User, Shield, Building2, UserPlus, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
@@ -8,6 +9,7 @@ import axios from 'axios';
 const SignupPage = ({ onNavigate }) => {
   const { t } = useLanguage();
   const { signup } = useAuth();
+  const { theme } = useTheme();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -49,7 +51,7 @@ const SignupPage = ({ onNavigate }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#060913] relative overflow-hidden flex flex-col justify-center items-center px-6 py-12">
+    <div className={`min-h-screen relative overflow-hidden flex flex-col justify-center items-center px-6 py-12 ${theme === 'light' ? 'bg-[#f1f5f9]' : 'bg-[#060913]'}`}>
       
       {/* Background decoration */}
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-emerald-500/5 blur-[100px] pointer-events-none" />

@@ -13,6 +13,10 @@ export const translations = {
     navStaff: 'Attendance & Roster',
     navLabAudits: 'Lab Test Audits',
     navLogout: 'Logout',
+    navFeatures: 'Features',
+    navStats: 'Telemetry Stats',
+    navContact: 'Contact Support',
+    navHome: 'Home',
     
     // Language
     langSwitch: 'हिन्दी',
@@ -35,6 +39,22 @@ export const translations = {
     featureAttendanceDesc: 'Real-time tracking of doctors and staff attendance to flag absenteeism instantly.',
     featureAuditTitle: 'Lab Test Audits',
     featureAuditDesc: 'Track availability of diagnostic tests and reagent stock in real-time.',
+    
+    // Expanded Landing Page
+    contactUsTitle: 'Contact District Support',
+    contactUsSubtitle: 'Reach out to the Chief Medical Officer (CMO) or command center operators for queries.',
+    contactFormName: 'Official Name',
+    contactFormEmail: 'Official Email ID',
+    contactFormMessage: 'Request Details / Query Description',
+    contactFormSubmit: 'Submit Request',
+    contactFormCenter: 'Select Associated Health Center',
+    contactSuccess: 'Query submitted successfully. The District Command Center will review your request.',
+    statsTitle: 'District Command Scale',
+    statsSub: 'Empowering regional healthcare supply chains with real-time operations telemetry.',
+    statTotalBeds: 'Total Monitored Beds',
+    statDailyTests: 'Daily Diagnostic Capacity',
+    statActiveDoctors: 'Scheduled Active Staff',
+    statSupplyItems: 'Core Monitored Inventory Items',
     
     // Auth Pages
     loginTitle: 'Sign In to Portal',
@@ -168,6 +188,10 @@ export const translations = {
     navStaff: 'उपस्थिति और रोस्टर',
     navLabAudits: 'लैब टेस्ट ऑडिट',
     navLogout: 'लॉगआउट',
+    navFeatures: 'विशेषताएं',
+    navStats: 'टेलीमेट्री आँकड़े',
+    navContact: 'संपर्क करें',
+    navHome: 'होम',
     
     // Language
     langSwitch: 'English',
@@ -190,6 +214,22 @@ export const translations = {
     featureAttendanceDesc: 'अनुपस्थिति को तुरंत चिह्नित करने के लिए डॉक्टरों और कर्मचारियों की वास्तविक समय ट्रैकिंग।',
     featureAuditTitle: 'लैब टेस्ट ऑडिट',
     featureAuditDesc: 'नैदानिक परीक्षणों की उपलब्धता और अभिकर्मक (Reagent) स्टॉक की वास्तविक समय ट्रैकिंग।',
+    
+    // Expanded Landing Page
+    contactUsTitle: 'जिला सहायता से संपर्क करें',
+    contactUsSubtitle: 'पूछताछ या केंद्र संशोधनों के लिए मुख्य चिकित्सा अधिकारी (CMO) या कमांड सेंटर ऑपरेटरों से संपर्क करें।',
+    contactFormName: 'आधिकारिक नाम',
+    contactFormEmail: 'आधिकारिक ईमेल आईडी',
+    contactFormMessage: 'अनुरोध विवरण / प्रश्न विवरण',
+    contactFormSubmit: 'अनुरोध जमा करें',
+    contactFormCenter: 'संबद्ध स्वास्थ्य केंद्र चुनें',
+    contactSuccess: 'अनुरोध सफलतापूर्वक भेजा गया। जिला कमांड सेंटर आपके अनुरोध की समीक्षा करेगा।',
+    statsTitle: 'जिला कमांड पैमाना',
+    statsSub: 'वास्तविक समय परिचालन टेलीमेट्री के साथ क्षेत्रीय स्वास्थ्य सेवा आपूर्ति श्रृंखलाओं को सशक्त बनाना।',
+    statTotalBeds: 'कुल बिस्तरों की निगरानी',
+    statDailyTests: 'दैनिक नैदानिक क्षमता',
+    statActiveDoctors: 'अनुसूचित सक्रिय कर्मचारी',
+    statSupplyItems: 'मुख्य निगरानी सूची वस्तुएं',
     
     // Auth Pages
     loginTitle: 'पोर्टल में साइन इन करें',

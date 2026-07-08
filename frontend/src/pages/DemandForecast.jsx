@@ -3,11 +3,13 @@ import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid, ReferenceLine, ResponsiveContainer } from 'recharts';
 import { TrendingUp, AlertTriangle, HelpCircle, ShieldAlert } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 import axios from 'axios';
 
 const DemandForecast = ({ selectedCenterId }) => {
   const { t } = useLanguage();
   const { user } = useAuth();
+  const { theme } = useTheme();
   
   const [inventory, setInventory] = useState([]);
   const [selectedItemId, setSelectedItemId] = useState('');
@@ -220,10 +222,10 @@ const DemandForecast = ({ selectedCenterId }) => {
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" vertical={false} />
-                  <XAxis dataKey="date" stroke="#94a3b8" fontSize={10} tickLine={false} />
-                  <YAxis stroke="#94a3b8" fontSize={10} tickLine={false} />
+                  <XAxis dataKey="date" stroke={theme === 'light' ? '#475569' : '#94a3b8'} fontSize={10} tickLine={false} />
+                  <YAxis stroke={theme === 'light' ? '#475569' : '#94a3b8'} fontSize={10} tickLine={false} />
                   <Tooltip 
-                    contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '12px', fontSize: '11px' }}
+                    contentStyle={{ backgroundColor: theme === 'light' ? '#ffffff' : '#0f172a', borderColor: theme === 'light' ? '#cbd5e1' : '#334155', color: theme === 'light' ? '#0f172a' : '#f8fafc', borderRadius: '12px', fontSize: '11px' }}
                     formatter={(value, name, props) => [`${value} units`, props.payload.type + ' Stock']}
                   />
                   {/* Reference Line for minStock threshold */}
