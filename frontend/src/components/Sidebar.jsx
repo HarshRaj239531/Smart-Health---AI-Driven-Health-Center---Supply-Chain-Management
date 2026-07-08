@@ -12,7 +12,8 @@ import {
   Activity, 
   LogOut,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Sparkles
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -28,7 +29,8 @@ const Sidebar = ({ activeTab, setActiveTab, isCollapsed, setIsCollapsed }) => {
     { id: 'redistribution', label: t('navRedistribute'), icon: ArrowLeftRight, roles: ['ADMIN', 'STAFF'] },
     { id: 'beds', label: t('navBedsPatients'), icon: BedDouble, roles: ['ADMIN', 'STAFF', 'DOCTOR'] },
     { id: 'staff', label: t('navStaff'), icon: Users, roles: ['ADMIN', 'STAFF', 'DOCTOR'] },
-    { id: 'lab', label: t('navLabAudits'), icon: Activity, roles: ['ADMIN', 'STAFF', 'DOCTOR'] }
+    { id: 'lab', label: t('navLabAudits'), icon: Activity, roles: ['ADMIN', 'STAFF', 'DOCTOR'] },
+    { id: 'simulation', label: t('navSimulation'), icon: Sparkles, roles: ['ADMIN'] }
   ];
 
   // Filter items based on user role

@@ -13,6 +13,8 @@ import RedistributionSuggestions from './pages/RedistributionSuggestions';
 import BedsAndPatients from './pages/BedsAndPatients';
 import StaffAttendance from './pages/StaffAttendance';
 import LabAndTests from './pages/LabAndTests';
+import AIAssistant from './components/AIAssistant';
+import SimulationSandbox from './pages/SimulationSandbox';
 
 const App = () => {
   const { user, token, loading } = useAuth();
@@ -124,7 +126,13 @@ const App = () => {
                 selectedCenterId={selectedCenterId} 
               />
             )}
+            {activeTab === 'simulation' && (
+              <SimulationSandbox />
+            )}
           </main>
+
+          {/* Floating interactive AI Copilot assistant */}
+          <AIAssistant />
         </div>
 
       </div>

@@ -6,27 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 
 const BedsAndPatients = ({ selectedCenterId }) => {
-  const { t } = {
-    t: (key) => {
-      const map = {
-        'bedsPatientsTitle': 'Beds Logistics & Patient Traffic',
-        'bedAvailabilityHeader': 'Bed Occupancy Levels',
-        'bedType': 'Bed Class',
-        'totalBeds': 'Capacity',
-        'occupiedBeds': 'Occupied',
-        'availableBeds': 'Available',
-        'updateOccupancy': 'Update Bed Occupancy',
-        'patientFootfallHeader': 'Patient Traffic Overview',
-        'peakHours': 'Peak Rush Hour',
-        'triageOPD': 'Outpatient (OPD)',
-        'triageEmergency': 'Emergency',
-        'triageIPD': 'Inpatient (IPD)',
-        'btnCancel': 'Cancel',
-        'btnSubmit': 'Save'
-      };
-      return map[key] || key;
-    }
-  };
+  const { t } = useLanguage();
   const { user } = useAuth();
   
   const [beds, setBeds] = useState([]);

@@ -6,23 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 
 const LabAndTests = ({ selectedCenterId }) => {
-  const { t } = {
-    t: (key) => {
-      const map = {
-        'labTitle': 'Diagnostic Laboratory Audits',
-        'testName': 'Test Class',
-        'isAvailableLabel': 'Availability Status',
-        'reagentStockLabel': 'Reagent Kits Stock',
-        'dailyCapacityLabel': 'Max Capacity / Day',
-        'testAvailable': 'Available',
-        'testUnavailable': 'Suspended',
-        'updateReagents': 'Audit Reagents',
-        'btnCancel': 'Cancel',
-        'btnSubmit': 'Save'
-      };
-      return map[key] || key;
-    }
-  };
+  const { t } = useLanguage();
   const { user } = useAuth();
   
   const [tests, setTests] = useState([]);

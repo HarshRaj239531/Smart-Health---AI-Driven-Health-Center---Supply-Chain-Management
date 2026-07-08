@@ -6,25 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 
 const StaffAttendance = ({ selectedCenterId }) => {
-  const { t } = {
-    t: (key) => {
-      const map = {
-        'staffTitle': 'Staff Biometric Attendance Register',
-        'clockInSimTitle': 'Biometric Scanner Simulator',
-        'selectStaffToSimulate': 'Select a staff member to simulate fingerprint punch:',
-        'btnClockIn': 'Punch Fingerprint',
-        'attendanceLogTitle': 'Daily Attendance Log',
-        'checkInTime': 'Clock In',
-        'checkOutTime': 'Clock Out',
-        'staffRole': 'Role',
-        'statusPresent': 'Present',
-        'statusAbsent': 'Absent',
-        'statusLeave': 'Leave',
-        'statusOnCall': 'On-Call'
-      };
-      return map[key] || key;
-    }
-  };
+  const { t } = useLanguage();
   const { user } = useAuth();
   
   const [attendance, setAttendance] = useState([]);
